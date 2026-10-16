@@ -28,11 +28,11 @@ make saved flag totals differ from initial review-target counts; explain this.
 
 Compare coverage at stated, shared calculated rounds when possible. If versions
 stopped at different rounds, report their individual ranges; do not invent later
-observations or automatic fits. Results describe possible source-label reachability
-under selected network/mapping assumptions, not measured isotope abundance,
-quantitative carbon allocation, physical feeding time or experimental confirmation.
+observations or automatic fits. Enumeration describes possible source-label
+reachability, not quantitative carbon-source fractions, measured isotope
+abundance, physical feeding time or experimental confirmation.
 
-An old workbook or aggregate is not proof of current success. An error can occur
+An old workbook is not proof of current success. An error can occur
 before a new run report exists. File-size stops return normally but are not
 convergence; memory stops retain earlier rounds but are not resumable checkpoints.
 Review failures can leave valid independent outputs; list both rather than

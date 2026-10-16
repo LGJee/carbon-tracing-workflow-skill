@@ -69,7 +69,7 @@ or modify them just to conceal an interface discrepancy.
 
 Some older project copies have MATLAB preparation or a separate step4, while
 the tested Python development version has merged ordinary/AI tracing in step3.
-Some installed review documentation still mentions step4 and its legacy tests.
-Follow the actual project entrypoint and report the discrepancy; neither recreate
-step4 nor silently alter that dependency. Older versions lacking the required
+The current step3 performs carbon-label Enumeration using ordinary and optional
+AI-reviewed mappings. Inspect the actual settings, documentation and filenames. Follow the installed entrypoint and report
+compatibility gaps; do not recreate step4 or silently alter dependencies. Older versions lacking the required
 plan/export interface are not certified by this skill.

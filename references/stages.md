@@ -48,7 +48,7 @@ blocked valid request rather than modifying checks or fabricating objective valu
 From the actual project root:
 
 ```bash
-python3 step2_atom_mapping.py --plan analyses/my_analysis/analysis_plan.json
+python3 step2_atom_mapping.py --plan results/results_by_AI/my_analysis/analysis_plan.json
 ```
 
 Use LocalMapper, RXNMapper and EnzymeMap for the default full workflow. Retain
@@ -89,20 +89,26 @@ their AIGenerated flags remain unchanged. Follow its behavior rather than renami
 an untouched workbook to manufacture success. Explain any archive/delivery error.
 
 Put legitimate `<model>_2_atom_mapping_AIGenerated.xlsx` copies in this plan's
-output folder. Preserve prior same-named reviewed deliverables; resolve a new
+output folder. Pass that folder explicitly with the review helper's
+`--output-dir`; its fallback may select the publication plan instead of this
+case. Preserve prior same-named reviewed deliverables; resolve a new
 version deliberately instead of overwriting them silently. An output delivered
 elsewhere is not automatically discovered by step3. Record that integration gap
 or arrange a compatible analysis plan/output location using existing interfaces.
 Do not remove/move other inputs merely to influence automatic discovery.
 
-## Unified propagation
+## Unified carbon analysis
 
 ```bash
-python3 step3_carbon_flow.py --plan analyses/my_analysis/analysis_plan.json
+python3 step3_carbon_flow.py --plan results/results_by_AI/my_analysis/analysis_plan.json
 ```
 
-Current step3 discovers both ordinary and `_AIGenerated` copies for selected
-models. Either can exist alone; if both exist, both run and get separate results.
+Step 3 runs Enumeration only; `--output-dir` isolates results without changing
+which step-2 mappings the plan selects. Original and `_AIGenerated` copies may
+exist alone or together. Available versions run independently and produce
+`_3_carbon_flow_Enumeration.xlsx` and
+`_3_carbon_flow_Enumeration_AIGenerated.xlsx`. Input hashes, mapping direction,
+structures and mapping provenance remain validated. No method flag is needed.
 Review-only copies may therefore produce identical carbon coverage. Explain this
 rather than inventing an AI improvement or rerunning a separate step4.
 
@@ -112,20 +118,27 @@ selection controls first; if unavailable, explain the interface gap and propose
 an isolated plan/output location for the selected copies. Preserve originals;
 do not hide or delete AI files to manipulate discovery.
 
-Use existing round/resource settings and authorized `--rounds` overrides. Do not
+For Enumeration, use existing round/resource settings and authorized `--rounds` overrides. Do not
 reinvoke mappers. Default inorganic-carbon recycling is disabled: inorganic
 endpoints are retained but their labels do not feed later reactions; other
 substrates still propagate. This is an analysis assumption, not evidence that
 CO2 has negligible biological importance. Record the actual selected setting.
 
-The tested default is a 50,000,000-byte post-save threshold for each result. Keep
-the complete triggering round, stop before the next, and report file_size_limit
-even if convergence also applies. Memory checks remain separate. Failed writes
-must not replace the last complete workbook. A rerun starts at round 1.
+For Enumeration, the current default is 50,000,000 bytes with `OUTPUT_BATCH_ROWS = 50000`.
+Use disk-staged output and actual candidate-XLSX checks at batch/layer boundaries.
+On size overflow, stop enumeration, discard the unfinished round and keep the
+preceding complete workbook and Summary. No pagination is emitted: a round that
+cannot fit one sheet stops with `row_limit`. Only complete rounds below the
+size threshold atomically replace the output. First-round rejection means zero
+current complete rounds, not reuse of an older output. Temporary candidates may
+overshoot between checks. Memory guards remain necessary for accumulated states;
+staged rows are not resumable checkpoints.
 
-Use process exit status and the current `carbon_flow_run.json`, not filenames
+For Enumeration, use process exit status and the current `carbon_flow_run.json`, not filenames
 alone, to establish completed rounds and outputs. Ordinary/AI records can share
 a model name; identify the mapping file and its hash. Earlier validation failure
-can leave an old report, so verify it belongs to the invocation. The aggregate
-`carbon_flow_summary.xlsx` includes available historical result Summaries and is
-not a current batch completion manifest.
+can leave an old report, so verify it belongs to the invocation. Step 3 also rebuilds `carbon_flow_summary.xlsx` from existing Enumeration
+workbooks in the output directory (one Summary per sheet, including AI versions).
+It does not search nested cases or recalculate data. Older saved files can be
+included; only the run manifest establishes current-run status. Long sheet names
+are shortened, `_AI` marks reviewed mappings, and numeric suffixes resolve collisions.

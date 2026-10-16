@@ -60,8 +60,9 @@ scripts do not call an LLM themselves.
 
 This skill targets the Python/COBRApy project interface with generated analysis
 plans and a merged `step3_carbon_flow.py` that discovers ordinary and
-`_AIGenerated` mappings. It does not require a separate step4. Some dependent
-documentation still mentions step4; inspect the actual project before running.
+`_AIGenerated` mappings. Step 3 runs carbon-label Enumeration, with separate
+ordinary/AI outputs and no separate step4 or method selector. Inspect the actual
+project interface before running.
 Older checkouts lacking this interface are not certified by the validation below.
 An existing newer local development checkout must not be replaced with an older
 public revision automatically. This skill release does not publish or upgrade
@@ -71,9 +72,16 @@ The tested platform is Linux under WSL on x86_64. Native Windows, macOS and ARM
 execution and a fresh installation were not verified. Inspect current project
 settings rather than assuming platform support or silently upgrading dependencies.
 
-The tested default size stop saves a complete round, then stops that result if
-its workbook reaches 50,000,000 bytes. The retained file may exceed this threshold.
-This is separate from memory protection. Propagation reruns start at round 1.
+The maintained batch-output policy checks actual candidate XLSX size at batch
+checkpoints. A candidate reaching 50,000,000 bytes is discarded with its unfinished
+round; only preceding complete rounds are published. There is no worksheet
+pagination. Memory protection remains separate. Propagation reruns start at round 1.
+
+New cases keep their script, plan, reports and workbooks together under
+`results/results_by_AI/<name>/`, sharing model data and environments. Step 3
+also collects saved result Summaries into `carbon_flow_summary.xlsx`, one sheet
+per ordinary or AI-reviewed workbook. It may include earlier results in that
+output directory; use `carbon_flow_run.json` to determine current-run status.
 
 Coverage describes possible carbon-origin label propagation and reachability
 under the chosen network, constraints and mappings. It is not experimental isotope
@@ -86,8 +94,9 @@ skill validator, independent routing evaluations and a small real three-mapper
 execution followed by one propagation round. The structured example contained
 two reactions and no review targets; no new scientific AI review was claimed.
 Separate synthetic checks covered review bookkeeping, ordinary/AI propagation,
-provenance checks, resource guards and file-size stops. Full publication models
-and cross-platform deployment were not rerun for this skill release.
+provenance checks, resource guards and file-size stops. The 2026-10-17 compatibility update passed skill metadata validation, 19 AI-review
+helper tests, 22 Summary/output/memory tests and four project regression scripts.
+Full publication models and cross-platform deployment were not rerun for this update.
 
 See [SKILL.md](SKILL.md) for the agent workflow and its linked references for
 deployment, stage handoffs and reporting conventions. Project code, models,
