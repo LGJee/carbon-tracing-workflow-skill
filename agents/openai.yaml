@@ -1,0 +1,4 @@
+interface:
+  display_name: "Carbon Tracing Workflow"
+  short_description: "Deploy and orchestrate the carbon-tracing workflow"
+  default_prompt: "Use $carbon-tracing-workflow-skill to deploy the project or run a carbon-tracing analysis from my existing inputs."
