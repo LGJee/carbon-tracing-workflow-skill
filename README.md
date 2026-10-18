@@ -122,3 +122,7 @@ its updated internal workflow, separates manual/AI records, and aligns method
 selection, output names and reporting with the installed project interface.
 Validation for this update checks skill metadata, local reference links and
 published-file consistency; it does not rerun real predictions or research data.
+
+Standalone carbon-tracing-review-skill now runs step 3 after review by default.
+This workflow explicitly requests a review-only handoff and owns the subsequent
+step-3 execution, so the same analysis is not launched twice.

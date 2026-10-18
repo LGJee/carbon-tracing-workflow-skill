@@ -75,6 +75,8 @@ For a full analysis, scientific review after mapping is enabled by default
 unless excluded by the user. Invoke carbon-tracing-review-skill and let it own
 input checking, missing-structure completion, affected-reaction remapping,
 refreshed target extraction, scientific review and validated copy delivery.
+Explicitly request a review-only handoff: this orchestrator owns the subsequent
+step-3 run. Standalone review defaults to running step 3 itself.
 Do not duplicate its internal pipeline or select only successful mapper outputs.
 Mapper failures still require a scientific attempt under that skill's rules.
 No targets is a reported no-op, not a fabricated AI copy. Report unresolved,

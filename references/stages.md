@@ -75,8 +75,10 @@ check files, complete justified missing structures, remap affected ready reactio
 under project Rules, rebuild all review targets, invoke enzymatic-atom-mapping,
 validate decisions, deliver copies/reports and persist evidence. Do not implement
 another workbook editor, structure resolver or reaction-review pipeline here.
-The review skill owns scientific delegation even when all mappers fail. This
-orchestrator owns subsequent step3; review should stop after its delivery.
+The review skill owns scientific delegation even when all mappers fail. Explicitly
+request review-only when delegating: this orchestrator owns subsequent step3 and
+runs it once after review delivery. Standalone review otherwise runs step 3 by
+default. Record that handoff to prevent duplicate propagation.
 
 Pass the actual workbooks, project location and selected plan's output folder
 explicitly. Preserve SourceInputSHA256: it identifies the original step1 input,
