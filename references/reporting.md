@@ -19,6 +19,13 @@ Record:
   stop reasons from current results. Include the Summary denominator definition
   from the installed implementation (currently carbon-containing metabolite IDs
   participating in usable final mappings, not all metabolites in the full model).
+- Review-stage structure discoveries and affected remapping outcomes from its
+  detailed report; link AI CSV indexes and archives without recomputing their
+  counts or promoting them to manual data. Mapper failure is distinct from
+  scientific review failure.
+- Actual selected methods, method-specific recycling settings, and their saved
+  tables. Do not require Summary for an EMU-only output or compare mean fractions
+  directly with Enumeration coverage.
 - Deliverable paths, validation evidence, errors, unfinished work and next action.
 
 Review outcome partitions and review flags overlap: do not add AIReviewed to the
@@ -31,6 +38,11 @@ stopped at different rounds, report their individual ranges; do not invent later
 observations or automatic fits. Enumeration describes possible source-label
 reachability, not quantitative carbon-source fractions, measured isotope
 abundance, physical feeding time or experimental confirmation.
+On projects supporting EMU, report the selected size-1 source-balance method,
+source/Unknown fractions, mapping version, recycling assumption, and numerical
+validation separately from Enumeration coverage. These are model-dependent
+mean origin fractions, not a full isotopomer simulation or a measured allocation.
+Distinguish emu_solved from emu_completed when combined delivery is interrupted.
 
 An old workbook is not proof of current success. An error can occur
 before a new run report exists. File-size stops return normally but are not

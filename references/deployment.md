@@ -55,7 +55,7 @@ it. Install official repository roots under the correct local names:
 | Local name | Repository |
 |---|---|
 | carbon-tracing-model-setup-skill | https://github.com/LGJee/carbon-tracing-model-setup-skill |
-| carbon-tracing-ai-review-skill | https://github.com/LGJee/carbon-tracing-ai-review-skill |
+| carbon-tracing-review-skill | https://github.com/LGJee/carbon-tracing-review-skill |
 | enzymatic-atom-mapping | https://github.com/LGJee/enzymatic-atom-mapping-skill |
 
 Do not bundle their contents or treat skill names as shell executables. Read and
@@ -69,7 +69,11 @@ or modify them just to conceal an interface discrepancy.
 
 Some older project copies have MATLAB preparation or a separate step4, while
 the tested Python development version has merged ordinary/AI tracing in step3.
-The current step3 performs carbon-label Enumeration using ordinary and optional
-AI-reviewed mappings. Inspect the actual settings, documentation and filenames. Follow the installed entrypoint and report
-compatibility gaps; do not recreate step4 or silently alter dependencies. Older versions lacking the required
+Inspect step3's actual method settings, documentation and output naming. The
+current development interface supports Enumeration and size-1 EMU-inspired source
+balances through ANALYSIS_METHODS; older checkouts may support Enumeration alone.
+Report capabilities and use supported methods without silently changing settings.
+Current outputs omit the legacy _Enumeration suffix and combine selected methods
+in one workbook per mapping version. Follow the installed entrypoint; do not
+recreate step4 or silently alter dependencies. Older versions lacking the required
 plan/export interface are not certified by this skill.

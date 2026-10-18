@@ -55,7 +55,12 @@ Use LocalMapper, RXNMapper and EnzymeMap for the default full workflow. Retain
 the project's direction, stoichiometry, pure-transport, unmappable-input and
 consensus rules. Let its CPU/memory capacity limit independent mapper jobs;
 do not add an outer parallel pool that oversubscribes the same computer.
-Wait for stage completion before reviewing final selections.
+Wait for stage completion before reviewing final selections. Reuse compatible
+manual_smiles.csv structures and manual_atom_mappings.csv carbon records first.
+Step 2 may use a known-structure subreaction while preserving the full model
+reaction; saved omissions require optional scientific review, not fabricated
+protein structures. Pass the original equation and omission context to the review
+skill and do not treat a reduced input as complete original-reaction coverage.
 
 The stage may reuse predictions after its input/settings checks. A cache hit is
 not established by the workbook name alone. Preserve raw predictions, scores,
@@ -64,38 +69,50 @@ executed tool can still return failed reactions; report these separately.
 
 ## Default scientific review
 
-For a complete analysis invoke `carbon-tracing-ai-review-skill`; it delegates
-reaction evidence and correspondence analysis to `enzymatic-atom-mapping`.
-Delegate workbook review/delivery only; this orchestrator owns subsequent merged
-step3 propagation, so the review skill must not also run its legacy step4 route.
-Use its existing inspect/apply helpers and JSON schema. Do not write another
-workbook editor or duplicate the scientific analysis. It targets the union of
-TRUE review flags, including failed reactions absent from Final_Mapping.
+For a complete analysis invoke carbon-tracing-review-skill. Read its installed
+SKILL.md and applicable handoff references. Delegate its full review workflow:
+check files, complete justified missing structures, remap affected ready reactions
+under project Rules, rebuild all review targets, invoke enzymatic-atom-mapping,
+validate decisions, deliver copies/reports and persist evidence. Do not implement
+another workbook editor, structure resolver or reaction-review pipeline here.
+The review skill owns scientific delegation even when all mappers fail. This
+orchestrator owns subsequent step3; review should stop after its delivery.
 
-Keep raw predictions and Mapping_Selection unchanged. Accepted replacements
-belong only in the delivered copy's Final_Mapping. `AIReviewed` means scientific
-analysis occurred; `AIGenerated` means an accepted replacement. `ReviewRequired`
-is preserved by default. None of these flags certifies experimental correctness.
+Pass the actual workbooks, project location and selected plan's output folder
+explicitly. Preserve SourceInputSHA256: it identifies the original step1 input,
+not a staging workbook's own hash. Structure completion may update structures
+and affected mapper/selection/final rows in a separate staging copy. Subsequent
+correspondence review changes Final_Mapping only relative to that staged input.
+Keep originals, unrelated rows and previous completed deliveries.
 
-The helper archives records under `data/ai_mapping_reviews/`. Reuse compatible
-candidate evidence through its validator, not by automatically accepting a cache.
-Rejected or incompatible records are not accepted mappings. Distinguish record
-counts from unique chemical transformations and current-run changes from old flags.
+Review targets include TRUE flags, blank mappings/missing final rows and newly
+affected reactions, subject to the review skill's Boundary/NoCarbon exemptions.
+Pass Partial_Mapping and omission context. Reduced correspondences remain Partial;
+scientifically rejected/unresolved partials are disabled in the AI copy under the
+review skill's validator. New AI proposals retain that skill's coverage rules.
+AIReviewed records actual scientific analysis; AIGenerated records accepted
+replacements. Preserve ReviewRequired by default. None certifies correctness.
 
-No flagged rows is a reported no-op, with no artificial AI copy. No accepted
-replacement still requires the actual review report. The review helper can
-deliver review-only copies when scientific retained/unresolved decisions exist;
-their AIGenerated flags remain unchanged. Follow its behavior rather than renaming
-an untouched workbook to manufacture success. Explain any archive/delivery error.
+Manual mapping records use Species, ReactionID, MappedReactionSMILES and retain
+priority. AI discoveries belong in ai_smiles.csv and
+ai_atom_mappings.csv with Source, plus immutable structure/mapping archives.
+Never turn AI discoveries into manual overrides implicitly. Reuse candidates
+only through exact-context checks and validators. Structure completion alone
+does not set reaction-level AIGenerated or AIReviewed. Let the review skill
+manage these records; the orchestrator links the resulting evidence and reports.
 
-Put legitimate `<model>_2_atom_mapping_AIGenerated.xlsx` copies in this plan's
-output folder. Pass that folder explicitly with the review helper's
-`--output-dir`; its fallback may select the publication plan instead of this
-case. Preserve prior same-named reviewed deliverables; resolve a new
-version deliberately instead of overwriting them silently. An output delivered
-elsewhere is not automatically discovered by step3. Record that integration gap
-or arrange a compatible analysis plan/output location using existing interfaces.
-Do not remove/move other inputs merely to influence automatic discovery.
+No targets means a reported no-op. Reviewed retained/unresolved decisions may
+produce a review-only copy with no new AIGenerated flags. Do not manufacture an
+AI workbook by renaming an untouched file. Reconcile report counts and flags;
+record unassessed targets, blocked operations and archive/delivery errors.
+
+Put legitimate <model>_2_atom_mapping_AIGenerated.xlsx copies in this plan's
+resolved output folder using the review helper's explicit --output-dir. Its
+fallback can select the publication plan instead of the custom case. Preserve
+same-named prior deliveries and resolve versioning deliberately. An output
+elsewhere is not automatically discovered by step3: report or resolve the handoff
+using compatible existing interfaces. Never move/delete other inputs to manipulate
+mapping-version discovery.
 
 ## Unified carbon analysis
 
@@ -103,12 +120,21 @@ Do not remove/move other inputs merely to influence automatic discovery.
 python3 step3_carbon_flow.py --plan results/results_by_AI/my_analysis/analysis_plan.json
 ```
 
-Step 3 runs Enumeration only; `--output-dir` isolates results without changing
+Newer step 3 selects Enumeration, size-1 EMU-inspired source balances, or both
+through ANALYSIS_METHODS at the script top. Inspect actual settings; do not assume
+both are available in an older checkout or change the user's method selection.
+Both methods read the same mapping
+version and share one result workbook; inspect actual installed capabilities.
+EMU is not a full isotopomer simulator. Enumeration exports R1-R3 detail sheets
+by default while later rounds continue updating Summary. EMU_Metabolites and
+EMU_BoundaryInputs belong to the independent balance solver, with separate EMU
+recycling/tolerance settings. No separate method workbooks are created; `--output-dir` isolates results without changing
 which step-2 mappings the plan selects. Original and `_AIGenerated` copies may
 exist alone or together. Available versions run independently and produce
-`_3_carbon_flow_Enumeration.xlsx` and
-`_3_carbon_flow_Enumeration_AIGenerated.xlsx`. Input hashes, mapping direction,
-structures and mapping provenance remain validated. No method flag is needed.
+`_3_carbon_flow.xlsx` and
+`_3_carbon_flow_AIGenerated.xlsx`. Input hashes, mapping direction,
+structures and mapping provenance remain validated. Use the installed script's
+settings; do not invent a --method option or require the legacy _Enumeration suffix.
 Review-only copies may therefore produce identical carbon coverage. Explain this
 rather than inventing an AI improvement or rerunning a separate step4.
 
@@ -130,7 +156,9 @@ On size overflow, stop enumeration, discard the unfinished round and keep the
 preceding complete workbook and Summary. No pagination is emitted: a round that
 cannot fit one sheet stops with `row_limit`. Only complete rounds below the
 size threshold atomically replace the output. First-round rejection means zero
-current complete rounds, not reuse of an older output. Temporary candidates may
+current complete Enumeration rounds and preserves the previous combined output.
+EMU-only runs can save independently. emu_solved means calculated;
+emu_completed means successfully delivered. Temporary candidates may
 overshoot between checks. Memory guards remain necessary for accumulated states;
 staged rows are not resumable checkpoints.
 

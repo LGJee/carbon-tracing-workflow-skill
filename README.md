@@ -46,23 +46,35 @@ models, and suitable existing inputs avoid unnecessary upstream calculations.
 | Responsibility | Existing capability |
 |---|---|
 | Select/configure models and export FBA/pFBA inputs | [carbon-tracing-model-setup-skill](https://github.com/LGJee/carbon-tracing-model-setup-skill) |
-| Review flagged mappings and deliver reviewed copies | [carbon-tracing-ai-review-skill](https://github.com/LGJee/carbon-tracing-ai-review-skill) |
+| Review flagged mappings and deliver reviewed copies | [carbon-tracing-review-skill](https://github.com/LGJee/carbon-tracing-review-skill) |
 | Establish evidence-supported enzymatic correspondences | [enzymatic-atom-mapping-skill](https://github.com/LGJee/enzymatic-atom-mapping-skill), installed as `enzymatic-atom-mapping` |
 | Predict and propagate mappings | Existing project scripts: LocalMapper, RXNMapper, EnzymeMap and carbon propagation |
 
 AI review is enabled by default for a complete analysis unless excluded by the
 user. No review targets means a reported no-op, not an artificial AI copy.
-Accepted replacements affect only `Final_Mapping` in a reviewed copy; raw
-predictions and `Mapping_Selection` remain unchanged. The fixed computation
-scripts do not call an LLM themselves.
+The review skill owns checking, missing-structure completion, affected-reaction
+remapping, target refresh, scientific review and validated delivery. Mapper failure
+does not stop its scientific analysis. Structure completion may update affected
+tables in a staging copy; subsequent correspondence replacements change only
+Final_Mapping relative to that copy. The fixed calculation scripts do not call an
+LLM themselves. This orchestrator checks the delivery instead of duplicating review.
+
+Manual CSVs retain priority. AI structures and mapping records remain separately
+in ai_smiles.csv and ai_atom_mappings.csv, including Source, with detailed immutable
+archives. AI data is not promoted into manual tables implicitly. Reuse candidates
+through the installed validators and link the review reports in workflow_report.md.
 
 ## Compatibility and interpretation
 
 This skill targets the Python/COBRApy project interface with generated analysis
 plans and a merged `step3_carbon_flow.py` that discovers ordinary and
-`_AIGenerated` mappings. Step 3 runs carbon-label Enumeration, with separate
-ordinary/AI outputs and no separate step4 or method selector. Inspect the actual
-project interface before running.
+`_AIGenerated` mappings. Inspect the installed method settings before running.
+The current development interface supports Enumeration, size-1 EMU-inspired
+source balances, or both through ANALYSIS_METHODS; older checkouts may support
+only Enumeration. Both methods share one result workbook per mapping version:
+<model>_3_carbon_flow.xlsx or <model>_3_carbon_flow_AIGenerated.xlsx. No separate
+step4 is required; do not invent command-line method switches or require legacy
+_Enumeration filenames. Use actual outputs and the current run manifest.
 Older checkouts lacking this interface are not certified by the validation below.
 An existing newer local development checkout must not be replaced with an older
 public revision automatically. This skill release does not publish or upgrade
@@ -83,9 +95,11 @@ also collects saved result Summaries into `carbon_flow_summary.xlsx`, one sheet
 per ordinary or AI-reviewed workbook. It may include earlier results in that
 output directory; use `carbon_flow_run.json` to determine current-run status.
 
-Coverage describes possible carbon-origin label propagation and reachability
-under the chosen network, constraints and mappings. It is not experimental isotope
-abundance, physical cultivation time or quantitative carbon allocation.
+Enumeration describes possible carbon-origin label reachability under the chosen
+network, constraints and mappings. EMU gives model-dependent single-carbon mean
+source fractions and retains Unknown; it is not a full isotopomer simulator.
+Report each method's inorganic-carbon setting separately. Neither method is an
+experimental measurement or a physical cultivation-time simulation.
 
 ## Validation
 
@@ -101,3 +115,10 @@ Full publication models and cross-platform deployment were not rerun for this up
 See [SKILL.md](SKILL.md) for the agent workflow and its linked references for
 deployment, stage handoffs and reporting conventions. Project code, models,
 environments, caches and private results are not bundled in this repository.
+
+
+The 2026-10-18 documentation update adopts carbon-tracing-review-skill, delegates
+its updated internal workflow, separates manual/AI records, and aligns method
+selection, output names and reporting with the installed project interface.
+Validation for this update checks skill metadata, local reference links and
+published-file consistency; it does not rerun real predictions or research data.
