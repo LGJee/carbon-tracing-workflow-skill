@@ -14,6 +14,22 @@ Coordinate existing capabilities; do not implement another modeling, mapping,
 review or propagation engine. Talk in the user's language and write generated
 scripts, reports and runtime messages in English.
 
+## Project context and responsibility
+
+Atom-mapped-carbon-tracing connects biological questions to carbon-source analysis:
+define culture conditions and obtain a flux solution, prepare molecular structures
+and atom mappings, review uncertain correspondences, then calculate carbon
+propagation or other methods supported by the selected project. The publication's
+non-IUPD/IUPD cases demonstrate this workflow without defining universal conditions.
+
+This skill owns stage selection, deployment, handoffs and verified delivery.
+Model setup and scientific reaction review belong to their specialized skills;
+numerical stages run through existing project code. Keep their meanings separate:
+flux feasibility, mapping coverage, chemical evidence and carbon-source results
+answer different questions. Enumeration reports possible label reachability;
+other method outputs require their own stated assumptions. Neither software
+completion nor AI involvement establishes an experimental measurement.
+
 ## Route the request
 
 Inspect supplied files and prior instructions before asking questions. Choose
