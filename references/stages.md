@@ -127,7 +127,7 @@ through ANALYSIS_METHODS at the script top. Inspect actual settings; do not assu
 both are available in an older checkout or change the user's method selection.
 Both methods read the same mapping
 version and share one result workbook; inspect actual installed capabilities.
-EMU is not a full isotopomer simulator. Enumeration exports R1-R3 detail sheets
+EMU is not a full isotopomer simulator. Enumeration exports R1-R3 details in one Carbon_Flow sheet, with Carbon_Flow_Round first,
 by default while later rounds continue updating Summary. EMU_Metabolites and
 EMU_BoundaryInputs belong to the independent balance solver, with separate EMU
 recycling/tolerance settings. No separate method workbooks are created; `--output-dir` isolates results without changing
@@ -172,3 +172,16 @@ workbooks in the output directory (one Summary per sheet, including AI versions)
 It does not search nested cases or recalculate data. Older saved files can be
 included; only the run manifest establishes current-run status. Long sheet names
 are shortened, `_AI` marks reviewed mappings, and numeric suffixes resolve collisions.
+
+## Shared AI work directory
+
+Create disposable workflow work under `<project>/.cache/ai/workflow/<run>/`.
+Use it for redirected terminal logs, downloaded research pages, intermediate
+JSON, proposals and staged copies; pass the chosen folder to the review skill.
+The review helper's default caches also live under .cache/ai/, and its structure
+completion helper defaults to .cache/ai/structures/. Do not override these with
+an output/results root just to save intermediate files. Final AI workbooks go
+to the plan's output directory; per-model final reports go to its reports/ folder.
+`report_files` is a per-input list with input_file, markdown and cached json paths.
+Clearing work caches does not clear ai_smiles.csv, ai_atom_mappings.csv, original
+models, analysis plans or the durable scientific review archives in data/.

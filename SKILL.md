@@ -45,8 +45,9 @@ the earliest necessary stage, not an automatic restart:
 | One stage only | Complete that stage without expanding the assignment |
 
 For a new analysis use an unused `results/results_by_AI/<name>/` folder, sharing the project
-environment and raw data. Keep the case script, plan, reports and workbooks
-directly in that folder, without another results subfolder. The folder name
+environment and raw data. Keep the case script, plan and workbooks directly in
+that folder, final readable reports under reports/, and process files in the AI
+cache. Do not create another results subfolder. The folder name
 identifies an AI-organized case, not AI-generated mappings; only the existing
 _AIGenerated suffix and workbook flags identify mapping provenance.
 Preserve reference scripts, original inputs and prior
@@ -76,6 +77,28 @@ instructions and relevant references, not copies of their implementations:
 - `enzymatic-atom-mapping`: scientific analysis delegated by the review skill;
   its repository is named `enzymatic-atom-mapping-skill`. Do not duplicate review.
 
+## Disposable AI work and final files
+
+Use `<project>/.cache/ai/<stage>/<run>/` for disposable AI process files:
+research downloads, extracted inputs, proposals, staging workbooks, retry reports,
+logs, validation output and continuation JSON. Stages may be workflow, setup,
+review, structures or enzymatic-mapping. Reuse the orchestrator's supplied run
+folder when available. Do not put these process files in the results root.
+
+Keep final workbooks in the selected case output directory and readable final
+reports under its `reports/` subfolder. Preserve reproducible preparation scripts
+and analysis plans with the case. Downloaded models, adopted AI/manual chemistry
+CSVs and immutable evidence supporting adopted records remain in `data/`; they
+are not disposable cache. Do not move the only copy of a prior final delivery or
+its scientific evidence into cache. A brief same-filesystem temporary file for
+atomic final publication is allowed and must be cleaned up.
+
+Users can remove `.cache/ai/` after its runs have stopped. This loses temporary
+progress and downloaded research pages, not formal results or adopted evidence.
+Do not automatically delete active runs, clear shared scientific tables, relocate
+old case files or change the computation project's own caches as a side effect.
+For standalone use without a project, use `.cache/ai/` under the chosen work folder.
+
 ## Execute the necessary stages
 
 Read [stage handoffs](references/stages.md) before connecting inputs or running
@@ -91,8 +114,11 @@ For a full analysis, scientific review after mapping is enabled by default
 unless excluded by the user. Invoke carbon-tracing-review-skill and let it own
 input checking, missing-structure completion, affected-reaction remapping,
 refreshed target extraction, scientific review and validated copy delivery.
-Explicitly request a review-only handoff: this orchestrator owns the subsequent
-step-3 run. Standalone review defaults to running step 3 itself.
+Pass the shared AI work folder and explicitly request a review-only handoff:
+this orchestrator owns the subsequent step-3 run. Review returns report_files as
+a per-model list: each entry has input_file, markdown and a cached process json.
+Use each model's own report and actual completion status; do not count input
+screening as scientific review or automatically propagate an incomplete review. Standalone review defaults to running step 3 itself.
 Do not duplicate its internal pipeline or select only successful mapper outputs.
 Mapper failures still require a scientific attempt under that skill's rules.
 No targets is a reported no-op, not a fabricated AI copy. Report unresolved,
@@ -133,9 +159,11 @@ failure repeatedly or restart all mapping because a later review/propagation fai
 Reuse compatible mapper/review caches through their validators. Propagation
 reruns start at round 1; saved rounds are not resumable checkpoints.
 
-Write a short English `workflow_report.md` following
+Write a short English `reports/workflow_report.md` following
 [reporting](references/reporting.md), linking detailed stage reports and Excel
 files rather than adding decorative sheets or another statistics implementation.
+Present each model/condition separately in conversation, with its own changes,
+completion status and final report link. Do not substitute batch-wide totals.
 Report unfinished work and interface discrepancies explicitly. Interpret
 Enumeration as possible source-label reachability, not quantitative source
 fractions, experimental isotope abundance, physical time or confirmed allocation.
