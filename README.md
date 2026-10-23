@@ -4,7 +4,7 @@ A Codex skill that deploys and orchestrates
 [atom-mapped-carbon-tracing](https://github.com/LGJee/atom-mapped-carbon-tracing).
 Start from a research question, metabolic model, input Excel workbook or existing
 atom mappings. The skill selects the necessary stages, reuses existing tools,
-checks their outputs and writes a concise English `reports/workflow_report.md`.
+checks their outputs and writes a concise English `Ai_reports/workflow_report.md`.
 
 ## Install and use
 
@@ -62,7 +62,7 @@ LLM themselves. This orchestrator checks the delivery instead of duplicating rev
 Manual CSVs retain priority. AI structures and mapping records remain separately
 in ai_smiles.csv and ai_atom_mappings.csv, including Source, with detailed immutable
 archives. AI data is not promoted into manual tables implicitly. Reuse candidates
-through the installed validators and link the review reports in reports/workflow_report.md.
+through the installed validators and link the review reports in Ai_reports/workflow_report.md.
 
 ## Compatibility and interpretation
 
@@ -131,7 +131,7 @@ step-3 execution, so the same analysis is not launched twice.
 
 Disposable AI workflow/setup/review/reaction files belong in the selected
 project's `.cache/ai/`, grouped by stage and run. Final Excel stays in the case
-output directory; final readable reports stay in its reports/ subfolder. Original
+output directory; final readable reports stay in its Ai_reports/ subfolder. Original
 models, reproducible scripts/plans, adopted chemistry CSVs and scientific evidence
 archives remain outside cache. After runs stop, users may delete .cache/ai/;
 this drops temporary progress without deleting final results. Existing work is

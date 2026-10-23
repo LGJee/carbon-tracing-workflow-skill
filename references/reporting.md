@@ -1,6 +1,6 @@
 # Concise workflow report
 
-Write `reports/workflow_report.md` in the analysis directory (or the user's accessible
+Write `Ai_reports/workflow_report.md` in the analysis directory (or the user's accessible
 delivery location for deployment-only). Link existing preparation/review reports
 and Excel files. Do not create another statistics workbook or decorative sheets.
 
@@ -54,7 +54,7 @@ calling the whole workflow successful or discarding valid work.
 
 Put raw logs, extraction JSON, candidates, retry reports and orchestration state
 in the selected project's `.cache/ai/workflow/<run>/`; pass that work folder to
-child skills. Review's final Markdown belongs in the case's reports/ folder, one
+child skills. Review's final Markdown belongs in the case's Ai_reports/ folder, one
 per model, combining its SMILES and mapping changes. Its detailed process JSON
 stays in .cache/ai/review/. Keep prepared scripts/plans and adopted chemistry and
 evidence outside disposable cache. Describe clearing the cache as discarding

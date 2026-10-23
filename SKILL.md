@@ -46,7 +46,7 @@ the earliest necessary stage, not an automatic restart:
 
 For a new analysis use an unused `results/results_by_AI/<name>/` folder, sharing the project
 environment and raw data. Keep the case script, plan and workbooks directly in
-that folder, final readable reports under reports/, and process files in the AI
+that folder, final readable reports under Ai_reports/, and process files in the AI
 cache. Do not create another results subfolder. The folder name
 identifies an AI-organized case, not AI-generated mappings; only the existing
 _AIGenerated suffix and workbook flags identify mapping provenance.
@@ -86,7 +86,7 @@ review, structures or enzymatic-mapping. Reuse the orchestrator's supplied run
 folder when available. Do not put these process files in the results root.
 
 Keep final workbooks in the selected case output directory and readable final
-reports under its `reports/` subfolder. Preserve reproducible preparation scripts
+reports under its `Ai_reports/` subfolder. Preserve reproducible preparation scripts
 and analysis plans with the case. Downloaded models, adopted AI/manual chemistry
 CSVs and immutable evidence supporting adopted records remain in `data/`; they
 are not disposable cache. Do not move the only copy of a prior final delivery or
@@ -159,7 +159,7 @@ failure repeatedly or restart all mapping because a later review/propagation fai
 Reuse compatible mapper/review caches through their validators. Propagation
 reruns start at round 1; saved rounds are not resumable checkpoints.
 
-Write a short English `reports/workflow_report.md` following
+Write a short English `Ai_reports/workflow_report.md` following
 [reporting](references/reporting.md), linking detailed stage reports and Excel
 files rather than adding decorative sheets or another statistics implementation.
 Present each model/condition separately in conversation, with its own changes,

@@ -181,7 +181,7 @@ JSON, proposals and staged copies; pass the chosen folder to the review skill.
 The review helper's default caches also live under .cache/ai/, and its structure
 completion helper defaults to .cache/ai/structures/. Do not override these with
 an output/results root just to save intermediate files. Final AI workbooks go
-to the plan's output directory; per-model final reports go to its reports/ folder.
+to the plan's output directory; per-model final reports go to its Ai_reports/ folder.
 `report_files` is a per-input list with input_file, markdown and cached json paths.
 Clearing work caches does not clear ai_smiles.csv, ai_atom_mappings.csv, original
 models, analysis plans or the durable scientific review archives in data/.
