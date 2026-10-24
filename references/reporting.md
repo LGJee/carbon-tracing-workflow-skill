@@ -15,17 +15,16 @@ Record:
   reviewed records, accepted current replacements, retained/unresolved/unassessed
   targets, and pre-existing AI provenance separately. Reconcile counts against
   the review helper's saved JSON/report; no review report means unknown, not zero.
-- Ordinary/AI mapping paths/hashes, actual saved rounds, observed coverage and
-  stop reasons from current results. Include the Summary denominator definition
-  from the installed implementation (currently carbon-containing metabolite IDs
-  participating in usable final mappings, not all metabolites in the full model).
+- Ordinary/AI mapping paths and hashes, output files, emu_solved,
+  emu_completed and stop_reason from this invocation's manifest. Verify current
+  report context and output sheets; no round counters or Summary are required.
 - Review-stage structure discoveries and affected remapping outcomes from its
   detailed report; link AI CSV indexes and archives without recomputing their
   counts or promoting them to manual data. Mapper failure is distinct from
   scientific review failure.
-- Actual selected methods, method-specific recycling settings, and their saved
-  tables. Do not require Summary for an EMU-only output or compare mean fractions
-  directly with Enumeration coverage.
+- EMU source/Unknown fractions, external-source categories, recycling setting,
+  tolerance and numerical checks. On partial structures report the known-position
+  scope even though internal scope columns are omitted from the exported sheet.
 - Deliverable paths, validation evidence, errors, unfinished work and next action.
 
 Review outcome partitions and review flags overlap: do not add AIReviewed to the
@@ -33,22 +32,17 @@ sum of replaced/retained/unresolved/unassessed. Unchanged or rejected maps do no
 imply unreviewed, and AI-generated does not mean correct. Missing final rows can
 make saved flag totals differ from initial review-target counts; explain this.
 
-Compare coverage at stated, shared calculated rounds when possible. If versions
-stopped at different rounds, report their individual ranges; do not invent later
-observations or automatic fits. Enumeration describes possible source-label
-reachability, not quantitative carbon-source fractions, measured isotope
-abundance, physical feeding time or experimental confirmation.
-On projects supporting EMU, report the selected size-1 source-balance method,
-source/Unknown fractions, mapping version, recycling assumption, and numerical
-validation separately from Enumeration coverage. These are model-dependent
-mean origin fractions, not a full isotopomer simulation or a measured allocation.
-Distinguish emu_solved from emu_completed when combined delivery is interrupted.
+Compare ordinary and reviewed source fractions only for compatible conditions,
+flux solution, sources and solver settings, disclosing any mapping/structure
+changes. These are model-dependent mean origins, not measurements or full
+isotopomer simulations. A larger resolved fraction is not proof of higher
+accuracy. Keep Unknown visible and do not allocate it among known sources.
 
-An old workbook is not proof of current success. An error can occur
-before a new run report exists. File-size stops return normally but are not
-convergence; memory stops retain earlier rounds but are not resumable checkpoints.
-Review failures can leave valid independent outputs; list both rather than
-calling the whole workflow successful or discarding valid work.
+An old workbook is not proof of current success. Errors can occur before a new
+report exists. Size, memory and disk failures return nonzero and keep previous
+files unchanged; emu_solved may be true while emu_completed is false. Review
+failure and downstream calculation failure are different outcomes. List valid
+independent deliverables and unfinished work without claiming batch success.
 
 ## File placement
 

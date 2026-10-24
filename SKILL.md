@@ -26,7 +26,7 @@ This skill owns stage selection, deployment, handoffs and verified delivery.
 Model setup and scientific reaction review belong to their specialized skills;
 numerical stages run through existing project code. Keep their meanings separate:
 flux feasibility, mapping coverage, chemical evidence and carbon-source results
-answer different questions. Enumeration reports possible label reachability;
+answer different questions. The current project runs size-1 EMU-inspired balances;
 other method outputs require their own stated assumptions. Neither software
 completion nor AI involvement establishes an experimental measurement.
 
@@ -124,53 +124,55 @@ Mapper failures still require a scientific attempt under that skill's rules.
 No targets is a reported no-op, not a fabricated AI copy. Report unresolved,
 partial or blocked review and identify available valid deliverables.
 
-Inspect the installed step3 settings before running. The current development
-interface supports Enumeration, size-1 EMU-inspired source balances, or both
-through ANALYSIS_METHODS at the script top; older compatible versions may support
-only Enumeration. Run selected supported methods without silently adding/removing
-methods or inventing CLI switches. Both methods share one output per mapping
-version: <model>_3_carbon_flow.xlsx or <model>_3_carbon_flow_AIGenerated.xlsx.
-Either mapping version may exist alone. No separate step4 is required. Step3
-calls neither mappers nor an LLM. Preserve older outputs and use actual filenames
-and the current run manifest rather than hardcoded legacy suffixes.
-Record inorganic-carbon assumptions separately by method. Current development
-defaults terminate inorganic-carbon labels for Enumeration and allow recycling
-for EMU; inspect actual settings. These choices do not establish biological CO2 loss.
+Inspect the installed step3 interface before running. The current project runs
+only fixed-flux, size-1 EMU-inspired carbon-source balances. There is no
+ANALYSIS_METHODS selector, enumeration, round setting, --rounds or separate step4.
+Do not restore removed methods to satisfy an old workflow instruction. If a user
+selects a historical checkout, identify its different interface explicitly
+rather than assuming this current contract or upgrading it silently.
 
-Use the installed stage's round/resource/inorganic-carbon settings, recording
-actual values and any authorized overrides. For Enumeration, the tested default size threshold
-is 50,000,000 bytes. Use the installed batch-output policy: stage records on
-disk, measure an actual candidate XLSX at batch/layer checkpoints, and discard
-an unfinished round reaching the threshold. Publish only complete rounds below
-the limit. Do not reintroduce pagination; row overflow stops with `row_limit`.
-Record `file_size_limit` or `row_limit`, never convergence. A zero-round stop
-does not make an older workbook a current result. Temporary files may overshoot
-between checks; required label states still consume memory, so guards remain.
+Step3 reads available ordinary and _AIGenerated mappings independently, producing
+<model>_3_carbon_flow.xlsx and <model>_3_carbon_flow_AIGenerated.xlsx. Either version
+may exist alone. New workbooks contain only EMU_Metabolites and
+EMU_BoundaryInputs. There is no new Summary, Carbon_Flow or summary collector.
+Historical combined workbooks remain historical; do not delete them or treat
+their tables as current-run results. Step3 calls no mappers and no LLM.
+
+Inspect and record EMU_ALLOW_INORGANIC_CARBON_RECYCLING (current default True),
+EMU_TOLERANCE (1e-8), MAX_CARBON_PROCESSES, CARBON_MEMORY_GB,
+MIN_AVAILABLE_MEMORY_GB and MAX_EXCEL_SIZE_MB. Inorganic-carbon recycling is a
+modeling assumption, not evidence that CO2 escapes or is biologically negligible.
+Use the project's shared scheduler; do not wrap it in another model-worker pool.
+It retains mapper parallelism, independent model/version workers, live memory
+checks, working-disk reserves and atomic complete-workbook saves. The current
+50 decimal MB limit rejects an oversized export without replacing prior output;
+resource/size failures return nonzero. No unfinished solve is a complete result.
 
 ## Verify and deliver
 
 Check exit codes, hashes and current reports; old files alone are not success.
 Distinguish success, no-op, partial review, errors, convergence and safety stops.
-Use carbon_flow_run.json to identify the actual mapping version and saved rounds.
-Step 3 also collects saved Enumeration Summary tables in `carbon_flow_summary.xlsx`,
-one sheet per normal or AI-reviewed workbook in the output directory. This can
-include older files; use the run manifest to identify current outputs. Do not retry an unchanged
-failure repeatedly or restart all mapping because a later review/propagation failed. Missing-structure completion through the review skill may remap affected ready reactions using its documented handoff.
-Reuse compatible mapper/review caches through their validators. Propagation
-reruns start at round 1; saved rounds are not resumable checkpoints.
+Use the current carbon_flow_run.json and exit code to identify the mapping
+version/hash and saved output, not an old filename alone. emu_solved confirms the
+balance was calculated; emu_completed=true, output_file and stop_reason=emu_solved
+identify successfully delivered tables. Inspect the emu numerical checks,
+assumptions and unresolved positions. Memory, disk, size or input failures can
+leave historical outputs intact and can occur before a new report exists.
+Do not retry an unchanged failure repeatedly or restart all mapping because a
+later review/analysis failed. Remap affected ready reactions only through the
+review skill's structure-completion handoff.
 
 Write a short English `Ai_reports/workflow_report.md` following
 [reporting](references/reporting.md), linking detailed stage reports and Excel
 files rather than adding decorative sheets or another statistics implementation.
 Present each model/condition separately in conversation, with its own changes,
 completion status and final report link. Do not substitute batch-wide totals.
-Report unfinished work and interface discrepancies explicitly. Interpret
-Enumeration as possible source-label reachability, not quantitative source
-fractions, experimental isotope abundance, physical time or confirmed allocation.
-Read carbon_flow_run.json and the selected methods' saved tables. Enumeration
-uses Summary; EMU-only outputs have no Enumeration Summary. Report EMU source
-and Unknown fractions, numerical checks and assumptions separately from possible
-label reachability. EMU is not a full isotopomer simulator. Do not fit curves.
+Report unfinished work and interface discrepancies explicitly. Report source
+and Unknown fractions, mapping version, tolerance, recycling assumption and
+numerical validation from this run. They are model-dependent mean carbon origins,
+not full isotopomer distributions, experimental measurements or physical time.
+Do not redistribute Unknown, infer a known source from a missing map, compare
+these means as former enumeration coverage, or fit curves automatically.
 
 The skill repository is https://github.com/LGJee/carbon-tracing-workflow-skill.
 Ordinary deployment/analysis does not authorize publishing the project, changing

@@ -65,15 +65,16 @@ scientific skills. A complete deployment should make all three available.
 Record source/revision when available. Do not overwrite existing skill versions
 or modify them just to conceal an interface discrepancy.
 
-## Known compatibility differences
+## Current compatibility boundary
 
-Some older project copies have MATLAB preparation or a separate step4, while
-the tested Python development version has merged ordinary/AI tracing in step3.
-Inspect step3's actual method settings, documentation and output naming. The
-current development interface supports Enumeration and size-1 EMU-inspired source
-balances through ANALYSIS_METHODS; older checkouts may support Enumeration alone.
-Report capabilities and use supported methods without silently changing settings.
-Current outputs omit the legacy _Enumeration suffix and combine selected methods
-in one workbook per mapping version. Follow the installed entrypoint; do not
-recreate step4 or silently alter dependencies. Older versions lacking the required
-plan/export interface are not certified by this skill.
+The current Python/COBRApy project uses generated version-3 plans and an EMU-only
+step3 that discovers ordinary and optional _AIGenerated mappings. Read its actual
+docs/interfaces.md, step3 settings and CLI help. It has no rounds, method selector,
+separate step4 or Summary collector. Each new output has EMU_Metabolites and
+EMU_BoundaryInputs. emu_completed in the current run manifest confirms delivery.
+
+Historical project versions may have MATLAB preparation, enumeration or combined
+methods. Detect and disclose those differences; do not silently upgrade an
+existing checkout or run obsolete switches. This skill update alone does not
+publish or update the computation project. When a requested capability is
+unavailable, report the concrete compatibility gap and preserve valid outputs.

@@ -89,7 +89,7 @@ Keep originals, unrelated rows and previous completed deliveries.
 
 Review targets include TRUE flags, blank mappings/missing final rows and newly
 affected reactions, subject to the review skill's Boundary/NoCarbon exemptions.
-Pass Partial_Mapping and omission context. Reduced correspondences remain Partial;
+Pass saved partial-correspondence records from hidden Mapping_Info and omission context; do not require a Partial_Mapping sheet. Reduced correspondences remain Partial;
 scientifically rejected/unresolved partials are disabled in the AI copy under the
 review skill's validator. New AI proposals retain that skill's coverage rules.
 AIReviewed records actual scientific analysis; AIGenerated records accepted
@@ -122,56 +122,51 @@ mapping-version discovery.
 python3 step3_carbon_flow.py --plan results/results_by_AI/my_analysis/analysis_plan.json
 ```
 
-Newer step 3 selects Enumeration, size-1 EMU-inspired source balances, or both
-through ANALYSIS_METHODS at the script top. Inspect actual settings; do not assume
-both are available in an older checkout or change the user's method selection.
-Both methods read the same mapping
-version and share one result workbook; inspect actual installed capabilities.
-EMU is not a full isotopomer simulator. Enumeration exports R1-R3 details in one Carbon_Flow sheet, with Carbon_Flow_Round first,
-by default while later rounds continue updating Summary. EMU_Metabolites and
-EMU_BoundaryInputs belong to the independent balance solver, with separate EMU
-recycling/tolerance settings. No separate method workbooks are created; `--output-dir` isolates results without changing
-which step-2 mappings the plan selects. Original and `_AIGenerated` copies may
-exist alone or together. Available versions run independently and produce
-`_3_carbon_flow.xlsx` and
-`_3_carbon_flow_AIGenerated.xlsx`. Input hashes, mapping direction,
-structures and mapping provenance remain validated. Use the installed script's
-settings; do not invent a --method option or require the legacy _Enumeration suffix.
-Review-only copies may therefore produce identical carbon coverage. Explain this
-rather than inventing an AI improvement or rerunning a separate step4.
+The current step3 runs fixed-flux single-carbon origin balances (size-1
+EMU-inspired) only. Inspect the actual installed code/docs; an older combined
+checkout has a different contract and is not automatically certified by this
+update. Do not invent a --method option, restore enumeration, add a step4 or use
+rounds. The default command above runs all available ordinary/AI mappings for the
+selected planned models. Each version is independent.
 
-Skipping new AI review does not exclude existing AI copies from discovery. Explain
-this distinction. For an explicit ordinary-only request, inspect supported version
-selection controls first; if unavailable, explain the interface gap and propose
-an isolated plan/output location for the selected copies. Preserve originals;
-do not hide or delete AI files to manipulate discovery.
+Outputs remain <model>_3_carbon_flow.xlsx and
+<model>_3_carbon_flow_AIGenerated.xlsx. Each new file contains only
+EMU_Metabolites and EMU_BoundaryInputs. The metabolite sheet omits FluxResidual,
+Status, StructureType, KnownCarbonCount and ContributionScope, which the solver
+keeps internally. Source/Unknown columns and original flux turnover are unchanged.
+A blank CarbonCount on a partial structure means its full carbon count is unknown;
+its mean source fractions cover explicit known positions only. Polymer totals
+can be unavailable. Do not turn missing values into zero or infer a complete
+molecular contribution.
 
-For Enumeration, use existing round/resource settings and authorized `--rounds` overrides. Do not
-reinvoke mappers. Default inorganic-carbon recycling is disabled: inorganic
-endpoints are retained but their labels do not feed later reactions; other
-substrates still propagate. This is an analysis assumption, not evidence that
-CO2 has negligible biological importance. Record the actual selected setting.
+Skipping new review does not exclude existing AI copies from discovery. For an
+explicit ordinary-only request, use supported mapping_files in the internal
+run_carbon_flow API, or an isolated, correctly registered input case after checking
+the actual interface. --output-dir changes only the result destination, not which
+mapping versions are found. Do not hide/delete AI files or alter trusted hashes.
 
-For Enumeration, the current default is 50,000,000 bytes with `OUTPUT_BATCH_ROWS = 50000`.
-Use disk-staged output and actual candidate-XLSX checks at batch/layer boundaries.
-On size overflow, stop enumeration, discard the unfinished round and keep the
-preceding complete workbook and Summary. No pagination is emitted: a round that
-cannot fit one sheet stops with `row_limit`. Only complete rounds below the
-size threshold atomically replace the output. First-round rejection means zero
-current complete Enumeration rounds and preserves the previous combined output.
-EMU-only runs can save independently. emu_solved means calculated;
-emu_completed means successfully delivered. Temporary candidates may
-overshoot between checks. Memory guards remain necessary for accumulated states;
-staged rows are not resumable checkpoints.
+Settings belong to step3, not the generated plan: recycling currently defaults
+True through EMU_ALLOW_INORGANIC_CARBON_RECYCLING and tolerance to 1e-8 through
+EMU_TOLERANCE. Record actual values and authorized overrides. Inorganic-carbon
+recycling does not establish biological CO2 loss. Keep external imports distinct
+and retain Unknown; do not redistribute or renormalize known source fractions.
 
-For Enumeration, use process exit status and the current `carbon_flow_run.json`, not filenames
-alone, to establish completed rounds and outputs. Ordinary/AI records can share
-a model name; identify the mapping file and its hash. Earlier validation failure
-can leave an old report, so verify it belongs to the invocation. Step 3 also rebuilds `carbon_flow_summary.xlsx` from existing Enumeration
-workbooks in the output directory (one Summary per sheet, including AI versions).
-It does not search nested cases or recalculate data. Older saved files can be
-included; only the run manifest establishes current-run status. Long sheet names
-are shortened, `_AI` marks reviewed mappings, and numeric suffixes resolve collisions.
+The shared scheduler limits independent model/version jobs by CPU/live memory,
+and no enumeration chunk/state workers remain. Keep the existing mapper and
+solver environments, memory/disk checks and atomic size-limited save helper.
+A complete oversized EMU candidate is rejected, returning nonzero and preserving
+any previous workbook; there are no saved rounds or resumable round checkpoints.
+
+Validate exit status, current carbon_flow_run.json and input/mapping hashes.
+For each mapping_file, emu_solved means a numerical solve finished;
+emu_completed=true with output_file and stop_reason=emu_solved means the complete
+workbook was published. Distinguish memory_limit, disk_space_limit,
+file_size_limit, error and not_completed. The emu object records numerical checks,
+assumptions and mapping_version. On batch failure another worker may have saved a
+complete file; report its actual state without calling the whole batch successful.
+An early validation failure can leave an old report; verify invocation context.
+No Summary, Carbon_Flow or carbon_flow_summary.xlsx is generated in the current
+version. Preserve historical files and do not use their presence as completion.
 
 ## Shared AI work directory
 

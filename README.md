@@ -66,73 +66,49 @@ through the installed validators and link the review reports in Ai_reports/workf
 
 ## Compatibility and interpretation
 
-This skill targets the Python/COBRApy project interface with generated analysis
-plans and a merged `step3_carbon_flow.py` that discovers ordinary and
-`_AIGenerated` mappings. Inspect the installed method settings before running.
-The current development interface supports Enumeration, size-1 EMU-inspired
-source balances, or both through ANALYSIS_METHODS; older checkouts may support
-only Enumeration. Both methods share one result workbook per mapping version:
-<model>_3_carbon_flow.xlsx or <model>_3_carbon_flow_AIGenerated.xlsx. No separate
-step4 is required; do not invent command-line method switches or require legacy
-_Enumeration filenames. Use actual outputs and the current run manifest.
-Older checkouts lacking this interface are not certified by the validation below.
-An existing newer local development checkout must not be replaced with an older
-public revision automatically. This skill release does not publish or upgrade
-the main computation project.
+The current target is the Python/COBRApy project with version-3 generated plans
+and an EMU-only step3. Inspect the actual installed interface before execution;
+a newer local checkout must not be replaced with an older public one. This skill
+does not itself publish or upgrade the computation project.
 
-The tested platform is Linux under WSL on x86_64. Native Windows, macOS and ARM
-execution and a fresh installation were not verified. Inspect current project
-settings rather than assuming platform support or silently upgrading dependencies.
+Step3 independently reads ordinary and available _AIGenerated mappings, producing
+<model>_3_carbon_flow.xlsx and <model>_3_carbon_flow_AIGenerated.xlsx. New files
+contain only EMU_Metabolites and EMU_BoundaryInputs. There is no enumeration,
+round selector, step4, Summary or summary collector. Historical files remain
+historical, not current success evidence.
 
-The maintained batch-output policy checks actual candidate XLSX size at batch
-checkpoints. A candidate reaching 50,000,000 bytes is discarded with its unfinished
-round; only preceding complete rounds are published. There is no worksheet
-pagination. Memory protection remains separate. Propagation reruns start at round 1.
+The size-1 EMU-inspired solver calculates fixed-flux mean origin fractions and
+retains Unknown, not full isotopomer distributions or measured contributions.
+Record recycling (current default True), tolerance and numerical checks. Preserve
+unknown regions of partial structures and external imports; more complete maps
+or larger resolved fractions do not establish higher accuracy.
 
-New cases keep their script, plan, reports and workbooks together under
-`results/results_by_AI/<name>/`, sharing model data and environments. Step 3
-also collects saved result Summaries into `carbon_flow_summary.xlsx`, one sheet
-per ordinary or AI-reviewed workbook. It may include earlier results in that
-output directory; use `carbon_flow_run.json` to determine current-run status.
+Shared mapper/model scheduling and memory/disk guards remain. Atomic size-limited
+exports reject oversized candidates without replacing existing files. Resource
+or size failures return nonzero; emu_solved is distinct from emu_completed. Verify
+the current manifest's mapping hashes and output files, not stale workbooks.
+See references/stages.md and references/reporting.md for the actual handoff.
 
-Enumeration describes possible carbon-origin label reachability under the chosen
-network, constraints and mappings. EMU gives model-dependent single-carbon mean
-source fractions and retains Unknown; it is not a full isotopomer simulator.
-Report each method's inorganic-carbon setting separately. Neither method is an
-experimental measurement or a physical cultivation-time simulation.
+New cases remain under results/results_by_AI/<name>/ with shared data/environments,
+per-model reviewed reports under Ai_reports/ and disposable work under .cache/ai/.
 
 ## Validation
 
-Validated against the current local Python development project using the official
-skill validator, independent routing evaluations and a small real three-mapper
-execution followed by one propagation round. The structured example contained
-two reactions and no review targets; no new scientific AI review was claimed.
-Separate synthetic checks covered review bookkeeping, ordinary/AI propagation,
-provenance checks, resource guards and file-size stops. The 2026-10-17 compatibility update passed skill metadata validation, 19 AI-review
-helper tests, 22 Summary/output/memory tests and four project regression scripts.
-Full publication models and cross-platform deployment were not rerun for this update.
+The EMU-only compatibility update checks metadata, references and a bounded
+deterministic stage handoff against the selected local project. The update passed 19 project handoff/resource/scheduler tests and metadata
+validation; integrated companion checks passed 34 review, 11 structure-completion,
+14 scientific-validator and five FBA/pFBA preparation tests. It does not establish full
+biochemical correctness, a fresh installation or cross-platform support.
+Previous combined-method validation belongs to earlier Git commits and does not
+certify the current interface.
 
 See [SKILL.md](SKILL.md) for the agent workflow and its linked references for
 deployment, stage handoffs and reporting conventions. Project code, models,
 environments, caches and private results are not bundled in this repository.
 
-
-The 2026-10-18 documentation update adopts carbon-tracing-review-skill, delegates
-its updated internal workflow, separates manual/AI records, and aligns method
-selection, output names and reporting with the installed project interface.
-Validation for this update checks skill metadata, local reference links and
-published-file consistency; it does not rerun real predictions or research data.
-
-Standalone carbon-tracing-review-skill now runs step 3 after review by default.
-This workflow explicitly requests a review-only handoff and owns the subsequent
-step-3 execution, so the same analysis is not launched twice.
-
-## AI work cache
-
-Disposable AI workflow/setup/review/reaction files belong in the selected
-project's `.cache/ai/`, grouped by stage and run. Final Excel stays in the case
-output directory; final readable reports stay in its Ai_reports/ subfolder. Original
-models, reproducible scripts/plans, adopted chemistry CSVs and scientific evidence
-archives remain outside cache. After runs stop, users may delete .cache/ai/;
-this drops temporary progress without deleting final results. Existing work is
-not automatically relocated, and active caches are never automatically cleared.
+Validation on 2026-10-24 used the current local EMU-only development interface.
+Official skill metadata checks passed. Tests were isolated and did not modify
+reference plans, model files or existing formal results. This does not certify
+biochemical accuracy, a fresh deployment, older public project versions or
+cross-platform execution. The computation project is not published by this skill
+maintenance task.
